@@ -3,12 +3,6 @@ $("document").ready(function() {
   //******************* VARIABLES ********************************************//
 
   // variable setUp
-  var streamer, channel, channelName, streamDesrc, thumbnail, channelLink, channelIdName;
-  var z = 0;
-  var streamArr = [];
-  var channelArr = [];
-  var channelurl, streamurl;
-  var itemTemplate;
   var channels = ["freecodecamp", "storbeck", "terakilobyte", "habathcx", "RobotCaleb", "thomasballinger", "noobs2ninjas", "beohoff", "rAx1337", "ESL_SC2"];
   var baseUrl = 'https://api.twitch.tv/kraken';
 
@@ -16,8 +10,8 @@ $("document").ready(function() {
   //******************* MAIN FUNCTIONS TO HANDLE AJAX AND POPULATE DOM *******//
   function populateInit() {
     for (var i = 0; i < channels.length; i++) {
-      channel = channels[i];
-      channelurl = baseUrl + "/channels/" + channel;
+      var channel = channels[i];
+      var channelurl = baseUrl + "/channels/" + channel;
       $.ajax({
         "url": channelurl,
         dataType: "jsonp",
@@ -56,18 +50,19 @@ $("document").ready(function() {
 
   // add new element to DOM -- elem needs to be object
   function populateDOM(elem) {
-    channelName = elem.display_name;
-    channelIdName = elem.name;
+    var channelName = elem.display_name;
+    var channelIdName = elem.name;
+    var streamDesrc;
     if (elem.status) {
       streamDesrc = elem.status;
     } else {
       streamDesrc = "Description unavailable.";
     }
-    channelLink = elem.url;
-    thumbnail = elem.logo;
+    var channelLink = elem.url;
+    var thumbnail = elem.logo;
 
     // template has to be inside func and after variables to work
-    itemTemplate =
+    var itemTemplate =
       `         <div class="item">
               <div class="indicator offline" id="${channelIdName}"></div>
               <div class="text">
@@ -85,12 +80,12 @@ $("document").ready(function() {
 
   //call to api to check if channel is online
   function ajaxCallOnline(channelIdName) {
-    streamurl = baseUrl + "/streams/" + channelIdName;
+    var streamurl = baseUrl + "/streams/" + channelIdName;
     $.ajax({
       url: streamurl,
       dataType: "jsonp",
       success: checkOnline,
-      error: console.log("error loading streams")
+      error: console.log("error loading streams"),
     });
   }
 
@@ -101,6 +96,18 @@ $("document").ready(function() {
       $("#" + tempName).removeClass("offline");
       $("#" + tempName).addClass("online");
     }
+  }
+
+  function exactSearch(){
+    $(".item").remove();
+    var exactChannel = $(".searchbar").val();
+    var exactChannelUrl = baseUrl + "/channels/" + exactChannel ;
+    $.ajax({
+      url: exactChannelUrl,
+      dataType: "jsonp",
+      succes: populateDOM,
+      error: console.log("will thorw anyway even if I don't know why")
+    });
   }
 
   //******************* User Interaction *****************************//
@@ -117,6 +124,9 @@ $("document").ready(function() {
   });
   $("button.all").on("click", function() {
     $(".item").show();
+  });
+  $("button.exact").on("click", function() {
+    exactSearch();
   });
 
   // start search
