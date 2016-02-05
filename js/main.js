@@ -16,27 +16,42 @@ $("document").ready(function() {
   //******************* MAIN FUNCTIONS TO HANDLE AJAX AND POPULATE DOM *******//
 
   //load list of channels provided on start up
-  
+
+
+  function populateInit() {
+    for (var i = 0; i < channels.length; i++) {
+      channel = channels[i];
+      channelurl = baseUrl + "/channels/" + channel;
+      $.ajax({
+        "url": channelurl,
+        dataType: "jsonp",
+        success: populateDOM,
+        error: errorChannel,
+      });
+    }
+  }
 
 
   // search for streams
   function startSearch() {
     var search = $(".searchbar").val();
     console.log(search);
-    if (search.length > 2) {
       $.ajax({
         url: baseUrl + "/search/channels?limit=25&q=" + search,
         dataType: "jsonp",
-        success: populateChannel,
+        success: extractArr,
         error: console.log("fuck"),
       });
     }
-  }
 
   // function to populate DOM
-  function populateChannel(obj) {
+  function populateFromSearch(obj) {
     $(".item").remove();
     var arr = obj.channels;
+    return arr;
+  }
+
+  function populateDOM(arr) {
     for (var i = 0; i < arr.length; i++) {
       var data = arr[i];
       channelName = data.display_name;
@@ -96,6 +111,9 @@ $("document").ready(function() {
   }
 
 
+  //populate DOM with initial array of channels
+  populateInit();
+
 
 
   //******************* User Interaction *****************************//
@@ -116,8 +134,8 @@ $("document").ready(function() {
 
   // start search
   $("button.go").click(startSearch);
-  $(".searchbar").keypress(function(e){
-    if(e.which == 13){
+  $(".searchbar").keypress(function(e) {
+    if (e.which == 13) {
       startSearch();
     }
   });
