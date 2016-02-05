@@ -50,17 +50,29 @@ $("document").ready(function() {
 
   // add new element to DOM -- elem needs to be object
   function populateDOM(elem) {
-    var channelName = elem.display_name;
-    var channelIdName = elem.name;
-    var streamDesrc;
-    if (elem.status) {
-      streamDesrc = elem.status;
-    } else {
-      streamDesrc = "Description unavailable.";
-    }
-    var channelLink = elem.url;
-    var thumbnail = elem.logo;
+    var channelName, streamDesrc, thumbnail, channelIdName, channelLink;
+    console.log("populateDom");
+    // case 1 error is returned - happens only on exact search
+    if (elem.error) {
+      console.log("if statement fired");
+      channelName = "Sorry, nothing found.";
+      streamDesrc = "Account does not exist or has been deleted.";
+      thumbnail = "../assets/warning.png";
+      channelIdName = "";
+      channelLink = "";
 
+      // default behavior
+    } else {
+      channelName = elem.display_name;
+      channelIdName = elem.name;
+      if (elem.status) {
+        streamDesrc = elem.status;
+      } else {
+        streamDesrc = "Description unavailable.";
+      }
+      channelLink = elem.url;
+      thumbnail = elem.logo;
+    }
     // template has to be inside func and after variables to work
     var itemTemplate =
       `         <div class="item">
@@ -74,8 +86,9 @@ $("document").ready(function() {
             </div>`;
     $(".list").append(itemTemplate);
     // call to api to check if channel is online here
-    ajaxCallOnline(channelIdName);
-
+    if (channelIdName !== "") {
+      ajaxCallOnline(channelIdName);
+    }
   }
 
   //call to api to check if channel is online
@@ -98,18 +111,28 @@ $("document").ready(function() {
     }
   }
 
-  function exactSearch(){
+  function exactSearch() {
     $(".item").remove();
     var exactChannel = $(".searchbar").val();
-    var exactChannelUrl = baseUrl + "/channels/" + exactChannel ;
+    var exactChannelUrl = baseUrl + "/channels/" + exactChannel;
     $.ajax({
       url: exactChannelUrl,
       dataType: "jsonp",
-      succes: populateDOM,
-      error: console.log("will thorw anyway even if I don't know why")
+      success: populateDOM,
+      // doesn't work!!!
+      error: errorMsgDOM,
     });
   }
 
+  // doesn't work!!!!!!
+  function errorMsgDOM() {
+    console.log("blub");
+    var template = `<div class="errormsg">
+                      <h4>${exactChannel}</h4>
+                      <p>...unfortunately this channel not available...</p>
+                    </div>`;
+    $(".list").append(template);
+  }
   //******************* User Interaction *****************************//
 
   // show/hide online offline channels
