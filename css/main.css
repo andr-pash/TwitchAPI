@@ -88,14 +88,9 @@ body {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  margin: 5px 0;
+  margin: 5px 0 5px 80px;
   border: solid 2px black;
   border-radius: 0 20px 20px 0;
-  overflow: hidden;
   background-color: white; }
 
 .indicator {
@@ -103,11 +98,7 @@ body {
   min-height: 80px;
   background-color: #993d3d; }
 
-.online {
-  background-color: #55bb31; }
-
 .text {
-  width: 60%;
   text-align: left; }
   .text--title {
     font-size: 1.3rem;
@@ -115,11 +106,18 @@ body {
 
 .logo {
   display: block;
-  width: 30%;
+  box-sizing: border-box;
   background-size: cover;
-  background-position: center; }
-  .logo--img {
-    height: 80px;
-    width: 80px; }
+  background-position: center;
+  height: 80px;
+  width: 80px;
+  -webkit-box-flex: 0;
+  -webkit-flex: none;
+      -ms-flex: none;
+          flex: none;
+  border-radius: 50%;
+  border: 4px solid;
+  border-color: #993d3d;
+  margin-left: -80px; }
 
 /*# sourceMappingURL=main.css.map */

@@ -58,7 +58,7 @@ $("document").ready(function() {
       channelName = "Sorry, nothing found.";
       streamDesrc = "Account does not exist or has been deleted.";
       thumbnail = "../assets/warning.png";
-      channelIdName = "";
+      channelIdName = "exact";
       channelLink = "";
 
       // default behavior
@@ -72,19 +72,21 @@ $("document").ready(function() {
       }
       channelLink = elem.url;
       thumbnail = elem.logo;
+      if(!thumbnail){
+        thumbnail = "../assets/placeholder.jpeg";
+      }
     }
     // template has to be inside func and after variables to work
     var itemTemplate =
       `       <div class="item">
-              <div class="indicator offline" id="${channelIdName}"></div>
+              <div class="logo" id="${channelIdName}"></div>
               <div class="text">
                 <h4 class="text--title">${channelName}</h4>
                 <p>${streamDesrc}</p>
               </div>
-              <a href="${channelLink}" class="logo" style="background-image: '${thumbnail}'">
-              </a>
             </div>`;
     $(".list").append(itemTemplate);
+    $("#" + channelIdName).css("background-image", "url(" + thumbnail + ")");
     // call to api to check if channel is online here
     if (channelIdName !== "") {
       ajaxCallOnline(channelIdName);
@@ -108,6 +110,7 @@ $("document").ready(function() {
       var tempName = data.stream.channel.name;
       $("#" + tempName).removeClass("offline");
       $("#" + tempName).addClass("online");
+      $("#" + tempName).css("border-color", "rgb(85, 187, 49)");
     }
   }
 
