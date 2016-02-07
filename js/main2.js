@@ -75,7 +75,7 @@ $("document").ready(function() {
     }
     // template has to be inside func and after variables to work
     var itemTemplate =
-      `         <div class="item">
+      `       <div class="item">
               <div class="indicator offline" id="${channelIdName}"></div>
               <div class="text">
                 <h4 class="text--title">${channelName}</h4>
@@ -137,23 +137,23 @@ $("document").ready(function() {
 
   // show/hide online offline channels
 
-  $("button.online").on("click", function() {
+  $(".btn--online").on("click", function() {
     $(".item").show();
     $(".offline").closest(".item").hide();
   });
-  $("button.offline").on("click", function() {
+  $(".btn--offline").on("click", function() {
     $(".item").show();
     $(".online").closest(".item").hide();
   });
-  $("button.all").on("click", function() {
+  $(".btn--all").on("click", function() {
     $(".item").show();
   });
-  $("button.exact").on("click", function() {
+  $(".btn--exact").on("click", function() {
     exactSearch();
   });
 
   // start search
-  $("button.go").click(startSearch);
+  $(".btn--go").click(startSearch);
   $(".searchbar").keypress(function(e) {
     if (e.which == 13) {
       startSearch();
