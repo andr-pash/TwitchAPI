@@ -79,7 +79,7 @@ $("document").ready(function() {
     // template has to be inside func and after variables to work
     var itemTemplate =
       `       <div class="item">
-              <div class="logo" id="${channelIdName}"></div>
+              <div class="logo offline" id="${channelIdName}"></div>
               <div class="text">
                 <h4 class="text--title">${channelName}</h4>
                 <p>${streamDesrc}</p>
