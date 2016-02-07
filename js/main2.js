@@ -78,13 +78,13 @@ $("document").ready(function() {
     }
     // template has to be inside func and after variables to work
     var itemTemplate =
-      `       <div class="item">
+      `       <a class="itemwrapper" href="${channelLink}"><div class="item">
               <div class="logo offline" id="${channelIdName}"></div>
               <div class="text">
                 <h4 class="text--title">${channelName}</h4>
                 <p>${streamDesrc}</p>
               </div>
-            </div>`;
+            </div></a>`;
     $(".list").append(itemTemplate);
     $("#" + channelIdName).css("background-image", "url(" + thumbnail + ")");
     // call to api to check if channel is online here
